@@ -9,6 +9,9 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  azureSubscription: bolkanapps-service-connection
+
 steps:
 - task: DotNetCoreCLI@2
   inputs:
@@ -29,3 +32,10 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
+
+- task: AzureFunctionApp@1
+  displayName: Azure Function App Deploy
+  inputs:
+    azureSubscription: $(azureSubscription)
+    appName: samplefunctionapp
+    package: $(System.DefaultWorkingDirectory)/**/*.zip
