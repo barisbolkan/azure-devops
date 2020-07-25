@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "azure_webjob": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
