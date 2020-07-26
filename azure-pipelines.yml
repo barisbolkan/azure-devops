@@ -31,13 +31,20 @@ steps:
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
 
+- task: AzureRmWebAppDeployment@4
+  displayName: 'Azure App Service Deploy: javapipeline'
+  inputs:
+    azureSubscription: '$(azureSubscription)'
+    appType: functionApp
+    WebAppName: deneme
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    enableCustomDeployment: true
+    DeploymentType: runFromZip    
+    TakeAppOfflineFlag: false
+    ExcludeFilesFromAppDataFlag: false
+    RenameFilesFlag: false
+
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     artifactName: 'drop'
-
-- task: AzureFunctionApp@1
-  inputs:
-    azureSubscription: '$(azureSubscription)'
-    appType: functionApp
-    appName: 'trial'
