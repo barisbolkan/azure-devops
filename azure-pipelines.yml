@@ -40,6 +40,6 @@ steps:
 
 - task: AzureFunctionApp@1
   inputs:
-    azureSubscription: '$(bolkanapps-service-connection)'
+    azureSubscription: '$(azureSubscription)'
     appType: functionApp
     appName: 'trial'
