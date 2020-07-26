@@ -7,35 +7,39 @@ trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'VS2017-Win2016'
 
 variables:
   azureSubscription: bolkanapps-service-connection
 
 steps:
+- script: |
+    dotnet restore
+    dotnet build --configuration Release
+
 - task: DotNetCoreCLI@2
   inputs:
-    command: 'build'
-    projects: '**/*.csproj'
-    arguments: '--output $(Build.BinariesDirectory)/publish_output --configuration Release'
+    command: publish
+    arguments: '--configuration Release --output publish_output'
+    projects: '*.csproj'
+    publishWebProjects: false
+    modifyOutputPath: false
+    zipAfterPublish: false
 
 - task: ArchiveFiles@2
+  displayName: "Archive files"
   inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)/publish_output'
+    rootFolderOrFile: "$(System.DefaultWorkingDirectory)/publish_output"
     includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
+    archiveFile: "$(System.DefaultWorkingDirectory)/build$(Build.BuildId).zip"
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    PathtoPublish: '$(System.DefaultWorkingDirectory)/build$(Build.BuildId).zip'
+    artifactName: 'drop'
 
 - task: AzureFunctionApp@1
-  displayName: Azure Function App Deploy
   inputs:
-    azureSubscription: $(azureSubscription)
-    appName: samplefunctionapp
-    package: $(System.DefaultWorkingDirectory)/**/*.zip
+    azureSubscription: '$(bolkanapps-service-connection)'
+    appType: functionApp
+    appName: 'trial'
