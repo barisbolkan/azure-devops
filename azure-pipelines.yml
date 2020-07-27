@@ -31,7 +31,6 @@ steps:
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
 
-steps:
 - task: AzureFunctionApp@1
   displayName: Azure Function App Deploy
   inputs:
