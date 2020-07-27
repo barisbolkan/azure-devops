@@ -19,6 +19,8 @@ namespace azure_webjob
             Host.CreateDefaultBuilder(args)
                 .ConfigureLogging((context, logging) =>
                 {
+                    logging.ClearProviders();
+                    logging.AddConsole();
                     logging.AddAzureWebAppDiagnostics();
                 })
                 .ConfigureServices((hostContext, services) =>
