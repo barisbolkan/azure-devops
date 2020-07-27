@@ -35,5 +35,5 @@ steps:
   displayName: Azure Function App Deploy
   inputs:
     azureSubscription: $(azureSubscription)
-    appName: mystroidapi
+    appName: mystroid-core
     package: $(Build.ArtifactStagingDirectory)/**/*.zip
