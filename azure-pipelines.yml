@@ -36,4 +36,4 @@ steps:
   inputs:
     azureSubscription: $(azureSubscription)
     appName: mystroidapi
-    package: $(System.DefaultWorkingDirectory)/**/*.zip
+    package: $(Build.ArtifactStagingDirectory)/**/*.zip
